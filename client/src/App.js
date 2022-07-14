@@ -26,23 +26,21 @@ const App = () => {
     setMessage([...message, ...chatArray]);
   };
   return (
-    <div>
-      <button
-        onClick={() => {
-          return df_text_query("hi");
-        }}
-      >
-        click me
-      </button>
-      <input
-        type="text"
-        onKeyPress={(e) => {
-          if (e.key === "Enter") {
-            return df_text_query(e.target.value);
-          }
-        }}
-      />
-      {<Message message={message} />}
+    <div className="row">
+      <div className="chatbot-boundary col s3 right" style={{boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px", position:'fixed', height: '70%', width:'25%', overflow:'auto'}}>
+        <div className="chatbot-messages">{<Message message={message} />}</div>
+        <div className="text-input">
+          <input
+            style={{ position: "fixed", top: "100px", backgroundColor: "pink" }}
+            type="text"
+            onKeyPress={(e) => {
+              if (e.key === "Enter") {
+                return df_text_query(e.target.value);
+              }
+            }}
+          />
+        </div>
+      </div>
     </div>
   );
 };
