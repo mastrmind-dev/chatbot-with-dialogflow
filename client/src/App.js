@@ -1,9 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import axios from "axios";
 import Message from "./Message";
 
 const App = () => {
   const [message, setMessage] = useState([]);
+  const chatAreaBottom = useRef(null);
+
+  useEffect(() => {
+    chatAreaBottom.current.scrollIntoView({ behavior: "smooth" });
+  }, [message]);
 
   const df_text_query = async (text) => {
     var says = {
@@ -34,9 +39,9 @@ const App = () => {
           position: "fixed",
           height: "70%",
           width: "25%",
-          overflow: "auto",
           right: "0",
           bottom: "0",
+          overflowY: "auto",
         }}
       >
         <div
@@ -45,15 +50,28 @@ const App = () => {
             position: "fixed",
             height: "7%",
             width: "25%",
-            right:'0',
+            right: "0",
             backgroundColor: "pink",
-            zIndex:'99'
+            zIndex: "99",
+            paddingLeft: "1%",
+            paddingTop: "0.7%",
           }}
         >
           Chatty
         </div>
-        <div className="chatbot-messages" style={{backgroundColor:'red', position:'relative', marginTop:'14%', marginBottom:'14%', paddingBottom:'3%'}}>
+        <div
+          className="chatbot-messages"
+          style={{
+            // backgroundColor: "red",
+            position: "relative",
+            marginTop: "14%",
+            marginBottom: "14%",
+            paddingBottom: "3%",
+            zIndex: "9",
+          }}
+        >
           {<Message message={message} />}
+          <div className="chatAreaBottom" ref={chatAreaBottom}></div>{/**this empty div is very important for scrollIntoView in the useEffect hook. To scroll this div into view the chatbot */}
         </div>
         <div
           className="text-input"
@@ -65,6 +83,8 @@ const App = () => {
             zIndex: "99",
             height: "7%",
             backgroundColor: "pink",
+            paddingLeft: "1%",
+            paddingRight: "1%",
           }}
         >
           <input
