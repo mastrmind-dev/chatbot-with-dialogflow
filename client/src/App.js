@@ -4,34 +4,59 @@ import Message from "./Message";
 
 const App = () => {
   const [message, setMessage] = useState([]);
+  const [userMessageSent, setUserMessageSent] = useState(false);
   const chatAreaBottom = useRef(null);
+  const inputText = useRef(null);
+
+  let says;
 
   useEffect(() => {
     chatAreaBottom.current.scrollIntoView({ behavior: "smooth" });
   }, [message]);
 
-  const df_text_query = async (text) => {
-    var says = {
+  const userMessage = async (userInput) => {
+    says = {
       speaks: "me",
-      msg: text,
+      msg: userInput,
     };
 
-    var chatArray = [says];
+    setMessage([...message, says]);
+    setUserMessageSent(true);
 
-    const response = await axios.post(
-      "http://localhost:4000/api/df_text_query",
-      { text: says.msg }
-    );
+    // var chatArray = [says];
 
+    // // const response = await axios.post(
+    // //   "http://localhost:4000/api/df_text_query",
+    // //   { text: says.msg }
+    // // );
+
+    // says = {
+    //   speaks: "bot",
+    //   // msg: response.data,
+    //   msg: "hello buddy",
+    // };
+    // chatArray.push(says);
+    // setMessage([...message, ...chatArray]);
+  };
+
+  const botMessage = async (userInput) => {
+    // const response = await axios.post("http://localhost:4000/api/df_text_query", {text:says.msg})
+    // setUserMessageSent(false);
     says = {
       speaks: "bot",
-      msg: response.data,
+      msg: "hi buddy",
     };
-    chatArray.push(says);
-    setMessage([...message, ...chatArray]);
+    setMessage([...message, says]);
+    setUserMessageSent(false);
   };
+
   return (
     <div className="row">
+      {userMessageSent
+        ? setTimeout(() => {
+            botMessage("inputText.current.value");
+          }, 2000)
+        : null}
       <div
         className="chatbot-boundary col s3 right"
         style={{
@@ -70,8 +95,17 @@ const App = () => {
             zIndex: "9",
           }}
         >
-          {<Message message={message} />}
-          <div className="chatAreaBottom" ref={chatAreaBottom}></div>{/**this empty div is very important for scrollIntoView in the useEffect hook. To scroll this div into view the chatbot */}
+          {/* {<Message message={message} />} */}
+          {userMessageSent ? (
+            <>
+            <Message message={message}/>
+            <div>chatty is typing...</div>
+            </>
+          ) : (
+            <Message message={message} />
+          )}
+          <div className="chatAreaBottom" ref={chatAreaBottom}></div>
+          {/**this empty div is very important for scrollIntoView in the useEffect hook. To scroll this div into view the chatbot */}
         </div>
         <div
           className="text-input"
@@ -88,10 +122,11 @@ const App = () => {
           }}
         >
           <input
+            ref={inputText}
             type="text"
             onKeyPress={(e) => {
               if (e.key === "Enter") {
-                return df_text_query(e.target.value);
+                return userMessage(e.target.value);
               }
             }}
           />
