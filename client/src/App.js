@@ -12,9 +12,11 @@ const App = () => {
 
   useEffect(() => {
     chatAreaBottom.current.scrollIntoView({ behavior: "smooth" });
+    inputText.current.focus();
   }, [message]);
 
   const userMessage = async (userInput) => {
+    inputText.current.value = ''
     says = {
       speaks: "me",
       msg: userInput,
