@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import axios from "axios";
 import Message from "./Message";
+import { Slider } from "materialize-css";
 
 const App = () => {
   const [message, setMessage] = useState([]);
@@ -16,7 +17,7 @@ const App = () => {
   }, [message]);
 
   const userMessage = async (userInput) => {
-    inputText.current.value = ''
+    inputText.current.value = "";
     says = {
       speaks: "me",
       msg: userInput,
@@ -43,7 +44,6 @@ const App = () => {
 
   const botMessage = async (userInput) => {
     // const response = await axios.post("http://localhost:4000/api/df_text_query", {text:says.msg})
-    // setUserMessageSent(false);
     says = {
       speaks: "bot",
       msg: "hi buddy",
@@ -62,13 +62,15 @@ const App = () => {
       <div
         className="chatbot-boundary col s3 right"
         style={{
-          boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
+          boxShadow: "rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px",
           position: "fixed",
           height: "70%",
           width: "25%",
-          right: "0",
-          bottom: "0",
+          right: "2%",
+          bottom: "3%",
           overflowY: "auto",
+          borderRadius:'10px',
+
         }}
       >
         <div
@@ -77,11 +79,14 @@ const App = () => {
             position: "fixed",
             height: "7%",
             width: "25%",
-            right: "0",
-            backgroundColor: "pink",
+            right: "2%",
+            backgroundColor: "#0d47a1",
             zIndex: "99",
             paddingLeft: "1%",
             paddingTop: "0.7%",
+            color: "white",
+            borderTopLeftRadius:'10px',
+            borderTopRightRadius: '10px'
           }}
         >
           Chatty
@@ -100,8 +105,8 @@ const App = () => {
           {/* {<Message message={message} />} */}
           {userMessageSent ? (
             <>
-            <Message message={message}/>
-            <div>chatty is typing...</div>
+              <Message message={message} />
+              <div>chatty is typing...</div>
             </>
           ) : (
             <Message message={message} />
@@ -114,16 +119,21 @@ const App = () => {
           style={{
             position: "fixed",
             width: "25%",
-            right: "0",
-            bottom: "0",
+            right: "2%",
+            bottom: "3%",
             zIndex: "99",
             height: "7%",
-            backgroundColor: "pink",
+            backgroundColor: "#0d47a1",
             paddingLeft: "1%",
             paddingRight: "1%",
+            borderBottomLeftRadius:'10px',
+            borderBottomRightRadius: '10px'
           }}
         >
           <input
+            style={{
+              color: "white",
+            }}
             ref={inputText}
             type="text"
             onKeyPress={(e) => {
