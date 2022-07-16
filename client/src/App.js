@@ -8,6 +8,7 @@ const App = () => {
   const [userMessageSent, setUserMessageSent] = useState(false);
   const chatAreaBottom = useRef(null);
   const inputText = useRef(null);
+  const userSaid = useRef('')
 
   let says;
 
@@ -43,34 +44,40 @@ const App = () => {
   };
 
   const botMessage = async (userInput) => {
-    // const response = await axios.post("http://localhost:4000/api/df_text_query", {text:says.msg})
+    console.log(typeof(userInput))
+    const response = await axios.post(
+      "http://localhost:4000/api/df_text_query",
+      { text: userInput }
+    );
+    console.log(response.data);
     says = {
       speaks: "bot",
-      msg: "hi buddy",
+      msg: response.data,
     };
     setMessage([...message, says]);
     setUserMessageSent(false);
   };
+//We are in a functional component. So below if code block is executed automatically. No need to put it into a nested function.
+  if(userMessageSent){
+    console.log(userMessageSent)
+    console.log(userSaid)
+    botMessage(userSaid.current)
+  }
 
   return (
     <div className="row">
-      {userMessageSent
-        ? setTimeout(() => {
-            botMessage("inputText.current.value");
-          }, 2000)
-        : null}
       <div
         className="chatbot-boundary col s3 right"
         style={{
-          boxShadow: "rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px",
+          boxShadow:
+            "rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px",
           position: "fixed",
           height: "70%",
           width: "25%",
           right: "2%",
           bottom: "3%",
           overflowY: "auto",
-          borderRadius:'10px',
-
+          borderRadius: "10px",
         }}
       >
         <div
@@ -85,8 +92,8 @@ const App = () => {
             paddingLeft: "1%",
             paddingTop: "0.7%",
             color: "white",
-            borderTopLeftRadius:'10px',
-            borderTopRightRadius: '10px'
+            borderTopLeftRadius: "10px",
+            borderTopRightRadius: "10px",
           }}
         >
           Chatty
@@ -126,8 +133,8 @@ const App = () => {
             backgroundColor: "#0d47a1",
             paddingLeft: "1%",
             paddingRight: "1%",
-            borderBottomLeftRadius:'10px',
-            borderBottomRightRadius: '10px'
+            borderBottomLeftRadius: "10px",
+            borderBottomRightRadius: "10px",
           }}
         >
           <input
@@ -138,7 +145,9 @@ const App = () => {
             type="text"
             onKeyPress={(e) => {
               if (e.key === "Enter") {
-                return userMessage(e.target.value);
+                userSaid.current=e.target.value
+                console.log(userSaid.current)
+                return userMessage(userSaid.current);
               }
             }}
           />
