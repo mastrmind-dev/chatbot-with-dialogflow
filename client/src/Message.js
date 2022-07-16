@@ -5,8 +5,8 @@ const Message = ({ message }) => {
     if (msg.speaks === "bot") {
       return (
         <div key={i} className="bot">
-          <h4>bot</h4>
-          {msg.msg}
+          <p className="col s3" style={{border:"solid", borderColor:'black'}}><a class="btn-floating btn-large waves-effect waves-light red">Chaty</a></p>
+          <p className="col s9" style={{border:"solid", borderColor:'black'}}>{msg.msg}</p>
         </div>
       );
     } else {
