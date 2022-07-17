@@ -1,16 +1,19 @@
 import React, { useState, useRef, useEffect } from "react";
 import axios from "axios";
 import Message from "./Message";
+import './css/Message.css'
 
 const App = () => {
-  const [message, setMessage] = useState([]);
+  let says = {
+    speaks: "bot",
+    msg: "Hello there..! How can I help you?",
+  };
+  const [message, setMessage] = useState([says]);
   const [userMessageSent, setUserMessageSent] = useState(false);
   const [isClosed, setIsClosed] = useState(true);
   const chatAreaBottom = useRef(null);
   const inputText = useRef(null);
   const userSaid = useRef("");
-
-  let says;
 
   useEffect(() => {
     if (!isClosed) {
@@ -42,15 +45,18 @@ const App = () => {
     setMessage([...message, says]);
     setUserMessageSent(false);
   };
-  //We are in a functional component. So below if code block is executed automatically. No need to put it into a nested function.
+  //We are in button functional component. So below if code block is executed automatically. No need to put it into button nested function.
   if (userMessageSent) {
-    botMessage(userSaid.current);
+    setTimeout(() => {
+      botMessage(userSaid.current);
+    }, 1000);
   }
 
   return (
     <div className="row">
       {isClosed ? (
-        <a
+        <button
+          href="#"
           className="btn-floating btn-large waves-effect waves-light blue"
           style={{ position: "fixed", right: 40, bottom: 40 }}
           onClick={() => {
@@ -58,7 +64,7 @@ const App = () => {
           }}
         >
           <i className="material-icons">chat</i>
-        </a>
+        </button>
       ) : (
         <div
           className="chatbot-boundary col s3 right"
@@ -89,9 +95,11 @@ const App = () => {
               borderTopLeftRadius: "10px",
               borderTopRightRadius: "10px",
             }}
-          >
-            Chatty
-            <a
+          ><i className="material-icons">chat_bubble_outline</i>
+            <span style={{fontSize:'1.5em', fontWeight:'bolder'}}> Chaty</span>
+              
+            <button
+              href="#"
               className="waves-effect waves-light btn-small right blue"
               style={{ marginRight: "2%" }}
               onClick={() => {
@@ -99,7 +107,7 @@ const App = () => {
               }}
             >
               <i className="material-icons">close</i>
-            </a>
+            </button>
           </div>
           <div
             className="chatbot-messages"
@@ -116,7 +124,18 @@ const App = () => {
             {userMessageSent ? (
               <>
                 <Message message={message} />
-                <div>chatty is typing...</div>
+                <div className="bot row">
+            <p className="col s3 chat-icon">
+              <button
+                href="#"
+                className="btn-floating btn-large waves-effect waves-light #90caf9 blue lighten-3"
+              >
+                Chaty
+              </button>
+            </p>
+            <p className="col s8 message-box bot-box">Chaty is typing...</p>
+            <p className='col s1'></p>
+          </div>
               </>
             ) : (
               <Message message={message} />
