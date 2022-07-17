@@ -23,14 +23,16 @@ const App = () => {
   }, [message]);
 
   const userMessage = async (userInput) => {
-    inputText.current.value = "";
-    says = {
-      speaks: "me",
-      msg: userInput,
-    };
+    if (userInput) {
+      inputText.current.value = "";
+      says = {
+        speaks: "me",
+        msg: userInput,
+      };
 
-    setMessage([...message, says]);
-    setUserMessageSent(true);
+      setMessage([...message, says]);
+      setUserMessageSent(true);
+    }
   };
 
   const botMessage = async (userInput) => {
@@ -45,6 +47,7 @@ const App = () => {
     setMessage([...message, says]);
     setUserMessageSent(false);
   };
+
   //We are in button functional component. So below if code block is executed automatically. No need to put it into button nested function.
   if (userMessageSent) {
     setTimeout(() => {
@@ -97,7 +100,18 @@ const App = () => {
             }}
           >
             <i className="material-icons col s1">chat_bubble_outline</i>
-            <><span style={{fontWeight:'bolder', fontSize:"1.5em", marginLeft:'10px'}}>Chaty</span> {userMessageSent ? <> is typing...</> : null}</>
+            <>
+              <span
+                style={{
+                  fontWeight: "bolder",
+                  fontSize: "1.5em",
+                  marginLeft: "10px",
+                }}
+              >
+                Chaty
+              </span>{" "}
+              {userMessageSent ? <> is typing...</> : null}
+            </>
 
             <button
               href="#"
