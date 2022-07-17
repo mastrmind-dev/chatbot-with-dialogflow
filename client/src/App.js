@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import axios from "axios";
 import Message from "./Message";
-import './css/Message.css'
+import "./css/Message.css";
 
 const App = () => {
   let says = {
@@ -49,7 +49,7 @@ const App = () => {
   if (userMessageSent) {
     setTimeout(() => {
       botMessage(userSaid.current);
-    }, 1000);
+    }, 700);
   }
 
   return (
@@ -81,7 +81,7 @@ const App = () => {
           }}
         >
           <div
-            className="chatbot-header"
+            className="chatbot-header ro"
             style={{
               position: "fixed",
               height: "7%",
@@ -95,9 +95,10 @@ const App = () => {
               borderTopLeftRadius: "10px",
               borderTopRightRadius: "10px",
             }}
-          ><i className="material-icons">chat_bubble_outline</i>
-            <span style={{fontSize:'1.5em', fontWeight:'bolder'}}> Chaty</span>
-              
+          >
+            <i className="material-icons col s1">chat_bubble_outline</i>
+            <><span style={{fontWeight:'bolder', fontSize:"1.5em", marginLeft:'10px'}}>Chaty</span> {userMessageSent ? <> is typing...</> : null}</>
+
             <button
               href="#"
               className="waves-effect waves-light btn-small right blue"
@@ -120,26 +121,7 @@ const App = () => {
               zIndex: "9",
             }}
           >
-            {/* {<Message message={message} />} */}
-            {userMessageSent ? (
-              <>
-                <Message message={message} />
-                <div className="bot row">
-            <p className="col s3 chat-icon">
-              <button
-                href="#"
-                className="btn-floating btn-large waves-effect waves-light #90caf9 blue lighten-3"
-              >
-                Chaty
-              </button>
-            </p>
-            <p className="col s8 message-box bot-box">Chaty is typing...</p>
-            <p className='col s1'></p>
-          </div>
-              </>
-            ) : (
-              <Message message={message} />
-            )}
+            {<Message message={message} />}
             <div className="chatAreaBottom" ref={chatAreaBottom}></div>
             {/**this empty div is very important for scrollIntoView in the useEffect hook. To scroll this div into view the chatbot */}
           </div>
